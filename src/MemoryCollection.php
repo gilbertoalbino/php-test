@@ -10,6 +10,11 @@ namespace Live\Collection;
 class MemoryCollection implements CollectionInterface
 {
     /**
+     * Default TTL for expiring the item in seconds.
+     */
+    const TTL = 1;
+
+    /**
      * Collection data
      *
      * @var array
@@ -17,11 +22,20 @@ class MemoryCollection implements CollectionInterface
     protected $data;
 
     /**
+     * Collection metadata.
+     *
+     * @var array $metadata
+     */
+    protected $metadata;
+
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->data = [];
+        $this->metadata = [];
     }
 
     /**
@@ -29,7 +43,10 @@ class MemoryCollection implements CollectionInterface
      */
     public function get(string $index, $defaultValue = null)
     {
-        if (!$this->has($index)) {
+
+        if (!$this->has($index) ||
+            $this->shouldExpire($this->metadata[$index]['ttl'])) {
+
             return $defaultValue;
         }
 
@@ -39,9 +56,12 @@ class MemoryCollection implements CollectionInterface
     /**
      * {@inheritDoc}
      */
-    public function set(string $index, $value)
+    public function set(string $index, $value, $ttl = 0)
     {
+        $ttl = (int)$ttl === 0 ? static::TTL : $ttl;
+
         $this->data[$index] = $value;
+        $this->metadata[$index]['ttl'] = time() + (int)$ttl;
     }
 
     /**
@@ -57,7 +77,7 @@ class MemoryCollection implements CollectionInterface
      */
     public function count(): int
     {
-        return count($this->data) + 1;
+        return count($this->data);
     }
 
     /**
@@ -66,5 +86,16 @@ class MemoryCollection implements CollectionInterface
     public function clean()
     {
         $this->data = [];
+    }
+
+    /**
+     * Check if the item timestamp is expired.
+     *
+     * @param int $timestamp
+     * @return bool
+     */
+    public function shouldExpire(int $timestamp)
+    {
+        return $timestamp < time();
     }
 }
