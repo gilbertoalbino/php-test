@@ -8,13 +8,23 @@ class FileCollectionTest extends TestCase
 {
 
     /**
-     * @testa
+     * @test
      * @doesNotPerformAssertions
      */
     public function objectCanBeConstructed()
     {
         $collection = new FileCollection('collection.txt');
         return $collection;
+    }
+
+
+    /**
+     * @test
+     */
+    public function shouldPassValidFilePathArgumentException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new FileCollection();
     }
 
     /**
