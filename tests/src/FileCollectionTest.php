@@ -22,7 +22,7 @@ class FileCollectionTest extends TestCase
      */
     public function collectionShouldSerializeStructure()
     {
-        $filename =  uniqid(time()) . '.txt';
+        $filename = uniqid(time()) . '.txt';
 
         $collection = new FileCollection($filename);
         $collection->set('index1', 'value1');

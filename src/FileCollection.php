@@ -2,7 +2,6 @@
 
 namespace Live\Collection;
 
-
 /**
  * File collection
  *
@@ -28,7 +27,7 @@ class FileCollection extends MemoryCollection
      *
      * @param string|null $filepath
      */
-    public function __construct(string $filepath = null, $check = false)
+    public function __construct(string $filepath = null)
     {
         if (is_null($filepath)) {
             throw new \InvalidArgumentException(

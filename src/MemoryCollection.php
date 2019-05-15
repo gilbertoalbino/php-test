@@ -43,10 +43,7 @@ class MemoryCollection implements CollectionInterface
      */
     public function get(string $index, $defaultValue = null)
     {
-
-        if (!$this->has($index) ||
-            $this->shouldExpire($this->metadata[$index]['ttl'])) {
-
+        if (!$this->has($index) || $this->shouldExpire($this->metadata[$index]['ttl'])) {
             return $defaultValue;
         }
 
