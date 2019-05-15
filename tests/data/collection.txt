@@ -1,0 +1,1 @@
+a:2:{s:4:"data";a:1:{s:6:"index1";s:6:"value1";}s:8:"metadata";a:1:{s:6:"index1";a:1:{s:3:"ttl";i:1558803596;}}}
