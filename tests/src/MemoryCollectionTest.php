@@ -104,4 +104,45 @@ class MemoryCollectionTest extends TestCase
 
         $this->assertTrue($collection->has('index'));
     }
+
+    /**
+     * @test
+     */
+    public function shouldExpireIfTtlIsLessThanTime()
+    {
+        $collection = new MemoryCollection();
+
+        $timestamp = time();
+
+        sleep(1); // makes $timestamp less then time()
+
+        $this->assertTrue($collection->shouldExpire($timestamp));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldNotExpireIfTtlIsGreaterThanTime()
+    {
+        $collection = new MemoryCollection();
+
+        $timestamp = time() + 2; // makes $timestamp 1 secs ahead of sleep(1)
+
+        sleep(1);
+
+        $this->assertFalse($collection->shouldExpire($timestamp));
+    }
+
+    /**
+     * @test
+     */
+    public function expiredIndexShouldReturnNothing()
+    {
+        $collection = new MemoryCollection();
+        $collection->set('index', 'value');
+
+        sleep(2); // Default MemoryCollection::TTL = 1
+
+        $this->assertEquals(null, $collection->get('index'));
+    }
 }
