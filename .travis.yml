@@ -20,8 +20,12 @@ script:
   - composer check
   - composer test
 
+env:
+  - CODECOV_TOKEN="f6aa029b-aa99-4481-b415-3d0b126b7cd8"
+
+
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 notifications:
-  email: dev@livecommerce.com.br
+  email: contato@gilbertoalbino.com
